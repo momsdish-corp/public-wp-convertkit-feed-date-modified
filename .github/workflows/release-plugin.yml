@@ -1,0 +1,50 @@
+name: Release Plugin
+
+env:
+  PLUGIN_NAME: convertkit-feed-date-modified
+  PLUGIN_ZIP_FILES: index.php convertkit-feed-date-modified.php convertkit-feed-date-modified-rss2.php LICENSE.md README.md
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  build-test-image:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 6
+
+    steps:
+      - name: Checkout files
+        timeout-minutes: 1
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # Get the version number
+      - name: Get the version number
+        id: get-version-number
+        run: |
+          # Get the release from ${{ env.PLUGIN_NAME }}.php file, e.g. * Version: 4.0.0
+          VERSION_NUMBER=$(grep -oP 'Version:\s+\K[0-9]+\.[0-9]+\.[0-9]+' "${{ env.PLUGIN_NAME }}.php")
+          if [ ! "${VERSION_NUMBER}" ]; then
+              echo "Error! Release number not found."
+              exit 1
+          fi
+          echo "Release number: ${VERSION_NUMBER}"
+           echo "VERSION_NUMBER=${VERSION_NUMBER}" >> $GITHUB_OUTPUT
+
+      # Zip up the plugin into a release PLUGIN_NAME
+      - name: Zip up the plugin`
+        run: |
+          mkdir -p "${{ env.PLUGIN_NAME }}"
+          cp -r ${{ env.PLUGIN_ZIP_FILES }} "${{ env.PLUGIN_NAME }}/"
+          zip -r "plugin.zip" "${{ env.PLUGIN_NAME }}"
+          ls -l "plugin.zip"
+
+      # Create a release
+      - name: Create a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.get-version-number.outputs.VERSION_NUMBER }}" "plugin.zip" --title "v${{ steps.get-version-number.outputs.VERSION_NUMBER }}" --notes "Release ${VERSION_NUMBER}"
