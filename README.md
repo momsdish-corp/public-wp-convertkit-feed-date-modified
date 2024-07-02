@@ -1,4 +1,4 @@
-# Description
+## Description
 
 TLDR: This plugin changes the feed from Date Published to Date Modified.
 
@@ -10,19 +10,19 @@ date modified.
 
 Once installed, the feed is accessible at `https://yourwebsite.com/index.php?feed=convertkit-date-modified`.
 
-# Requirements
+## Requirements
 - PHP 7 or higher
 - WordPress 6 or higher
 - Yoast Duplicate Post plugin
 
-# Installation
+## Installation
 
 - Download the [plugin.zip](https://github.com/momsdish-corp/public-wp-convertkit-feed-date-modified/releases/latest/download/plugin.zip) file from the latest releases.
 - Upload it to WordPress (Go to Admin Panel -> Plugins -> Add New Plugin -> Upload Plugin) and click to Install Now.
 - Activate the plugin (Or go to Plugins -> `ConvertKit Feed by Date Modified` -> Activate).
 - Access the feed at `https://yourwebsite.com/index.php?feed=convertkit-date-modified`.
 
-# Legal
+## Legal
 
 This WordPress plugin is provided as-is, without any guarantees or support. We're sharing the code to help anyone else 
 dealing with the same issues. The code can be used without any restrictions, both for commercial and non-commercial use.
